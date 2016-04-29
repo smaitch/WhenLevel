@@ -1,0 +1,10 @@
+## Interface: 50400
+## Title: WhenLevel
+## Author: Scott M Harrison
+## Notes: Records when you level
+## Version: 009
+## SavedVariables: WhenLevelDatabase
+## SavedVariablesPerCharacter: WhenLevelData
+
+WhenLevel.lua
+WhenLevel.xml

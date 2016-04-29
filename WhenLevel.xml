@@ -1,0 +1,190 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+	<Button name="com_mithrandir_whenLevelButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="537" y="16"/>
+		</Size>
+		<Layers>
+			<Layer level="BORDER">
+				<FontString name="$parentLevel" inherits="GameFontHighlightSmall" justifyH="RIGHT" parentKey="level">
+					<Size>
+						<AbsDimension x="40" y="14"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-3"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentDate" inherits="GameFontHighlightSmall" justifyH="LEFT" parentKey="date">
+					<Size>
+						<AbsDimension x="106" y="14"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentLevel" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="3" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentZone" inherits="GameFontHighlightSmall" justifyH="LEFT" parentKey="zone">
+					<Size>
+						<AbsDimension x="230" y="14"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentDate" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="3" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTotalPlayed" inherits="GameFontHighlightSmall" justifyH="RIGHT" parentKey="totalPlayed">
+					<Size>
+						<AbsDimension x="96" y="14"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentZone" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="3" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentLevelPlayed" inherits="GameFontHighlightSmall" justifyH="RIGHT" parentKey="levelPlayed">
+					<Size>
+						<AbsDimension x="96" y="14"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentTotalPlayed" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="3" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Button>
+	<Frame name="com_mithrandir_whenLevelConfigFrame" parent="InterfaceOptionsFramePanelContainer">
+		<Scripts>
+			<OnLoad>
+				WhenLevel:ConfigFrame_OnLoad(self);
+			</OnLoad>
+			<OnShow>
+				WhenLevel:ConfigFrame_OnShow(self);
+			</OnShow>
+			<OnSizeChanged>
+				WhenLevel:ConfigFrame_OnShow(self);
+			</OnSizeChanged>
+		</Scripts>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentLevel" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="7" y="-8"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentDate" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="43" y="-8"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentZone" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="152" y="-8"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTotalPlayed" inherits="GameFontNormal" justifyH="RIGHT">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="385" y="-8"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentLevelPlayed" inherits="GameFontNormal" justifyH="RIGHT">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="484" y="-8"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<ScrollFrame name="$parentScrollFrame" inherits="HybridScrollFrameTemplate">
+				<Size>
+					<AbsDimension x="600" y="540" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="-20" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Frames>
+					<Slider name="$parentScrollBar" inherits="HybridScrollBarTemplate" parentKey="scrollBar">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+								<Offset x="0" y="-13"/>
+							</Anchor>
+							<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT">
+								<Offset x="0" y="14"/>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								local name = self:GetName();
+								_G[name.."BG"]:Hide();
+								_G[name.."Top"]:Hide();
+								_G[name.."Bottom"]:Hide();
+								_G[name.."Middle"]:Hide();
+								self.doNotHide = true;
+							</OnLoad>
+						</Scripts>
+					</Slider>
+					<Frame name="$parentLogHighlightFrame" hidden="true">
+						<Anchors>
+							<Anchor point="TOPLEFT"/>
+							<Anchor point="BOTTOMRIGHT"/>
+						</Anchors>
+						<Layers>
+							<Layer level="ARTWORK">
+								<Texture name="$parentLogSkillHighlight" file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD"/>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnLoad>
+								self:SetParent(nil);
+							</OnLoad>
+						</Scripts>
+					</Frame>
+				</Frames>
+				<Scripts>
+					<OnLoad>
+						WhenLevel:ScrollFrame_OnLoad(self)
+					</OnLoad>
+				</Scripts>
+			</ScrollFrame>
+		</Frames>
+	</Frame>
+</Ui>
