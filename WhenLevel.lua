@@ -22,6 +22,8 @@
 --		009	Updates the interface to 50400.
 --			Changes the frame used for event processing.
 --			Changes from using PLAYER_ALIVE to PLAYER_ENTERING_WORLD.
+--		010	Updates the interface to 60200
+--			Corrects a problem with scrolling.
 --
 --	Known Issues
 --
@@ -277,7 +279,7 @@ if nil == WhenLevel or WhenLevel.versionNumber < WhenLevel_File_Version then
 		end,
 
 		ScrollFrame_Update = function(self)
-			self = self or WhenLevel
+			self = WhenLevel
 			local buttons = com_mithrandir_whenLevelConfigFrameScrollFrame.buttons
 			local numButtons = #buttons
 			local scrollOffset = HybridScrollFrame_GetOffset(com_mithrandir_whenLevelConfigFrameScrollFrame)

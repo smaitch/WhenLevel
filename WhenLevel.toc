@@ -1,8 +1,8 @@
-## Interface: 50400
+## Interface: 60200
 ## Title: WhenLevel
 ## Author: Scott M Harrison
 ## Notes: Records when you level
-## Version: 009
+## Version: 010
 ## SavedVariables: WhenLevelDatabase
 ## SavedVariablesPerCharacter: WhenLevelData
 
