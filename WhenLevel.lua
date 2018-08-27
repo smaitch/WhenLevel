@@ -24,6 +24,8 @@
 --			Changes from using PLAYER_ALIVE to PLAYER_ENTERING_WORLD.
 --		010	Updates the interface to 60200
 --			Corrects a problem with scrolling.
+--		011 Updates the interface to 80000
+--			Changes the Blizzard API use to C_Map.GetPlayerMapPosition now that GetPlayerMapPosition is removed.
 --
 --	Known Issues
 --
@@ -108,7 +110,8 @@ if nil == WhenLevel or WhenLevel.versionNumber < WhenLevel_File_Version then
 				if (nil == WhenLevelDatabase[self.playerRealm][self.playerName][currentLevel]) then
 					local hour, minute = GetGameTime()
 					local weekday, month, day, year = CalendarGetDate()
-					local x, y = GetPlayerMapPosition("player")
+					local results = C_Map.GetPlayerMapPosition(C_Map.GetBestMapForUnit("player"), "player")
+					local x, y = results.x, results.y
 					local L = { }
 					L["totalPlayed"] = arg1
 					L["serverTime"] = string.format("%4d-%02d-%02d %02d:%02d", year, month, day, hour, minute)
