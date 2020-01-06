@@ -109,7 +109,11 @@ if nil == WhenLevel or WhenLevel.versionNumber < WhenLevel_File_Version then
 				wipe(WhenLevelData)	-- we do not want the old information now that it is in the new structure
 				if (nil == WhenLevelDatabase[self.playerRealm][self.playerName][currentLevel]) then
 					local hour, minute = GetGameTime()
-					local weekday, month, day, year = CalendarGetDate()
+					local date = C_Calendar.GetDate()
+					local weekday = date.weekday
+					local month = date.month
+					local day = date.monthDay
+					local year = date.year
 					local results = C_Map.GetPlayerMapPosition(C_Map.GetBestMapForUnit("player"), "player")
 					local x, y = results.x, results.y
 					local L = { }
