@@ -26,6 +26,10 @@
 --			Corrects a problem with scrolling.
 --		011 Updates the interface to 80000
 --			Changes the Blizzard API use to C_Map.GetPlayerMapPosition now that GetPlayerMapPosition is removed.
+--		012	Updates the interface to 80300
+--			Changes the Blizzard API use to modern calendar API based on Retail or Classic availability.
+--			Changes obtaining the map coordinates for the current zone because some zones now give none.
+--			Changes from using ADDON_LOADED to PLAYER_LOGIN.
 --
 --	Known Issues
 --
@@ -61,7 +65,7 @@ if nil == WhenLevel or WhenLevel.versionNumber < WhenLevel_File_Version then
 		versionNumber = WhenLevel_File_Version,
 		currentlyProcessingLevel,
 		eventDispatch = {			-- table of functions whose keys are the events
-			['ADDON_LOADED'] = function(self, frame)
+			['PLAYER_LOGIN'] = function(self, frame)
 				self.playerRealm = GetRealmName()
 				self.playerName = UnitName('player')
 				_, self.playerClass = UnitClass('player')
@@ -108,17 +112,27 @@ if nil == WhenLevel or WhenLevel.versionNumber < WhenLevel_File_Version then
 				end
 				wipe(WhenLevelData)	-- we do not want the old information now that it is in the new structure
 				if (nil == WhenLevelDatabase[self.playerRealm][self.playerName][currentLevel]) then
-					local hour, minute = GetGameTime()
-					local date = C_Calendar.GetDate()
-					local weekday = date.weekday
-					local month = date.month
-					local day = date.monthDay
-					local year = date.year
-					local results = C_Map.GetPlayerMapPosition(C_Map.GetBestMapForUnit("player"), "player")
-					local x, y = results.x, results.y
+					local date
+					if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
+						date = C_DateAndTime.GetTodaysDate()
+						date.monthDay = date.day
+						date.weekday = date.weekDay	-- don't you just hate it when Blizzard API uses different capitalization!
+						date.hour, date.minute = GetGameTime()
+					else
+						date = C_DateAndTime.GetCurrentCalendarTime()
+					end
+					local x, y = 0, 0
+					local mapId = C_Map.GetBestMapForUnit("player")
+					if mapId then
+						local results = C_Map.GetPlayerMapPosition(mapId, "player")
+						if results and results.x and results.y then
+							x = results.x
+							y = results.y
+						end
+					end
 					local L = { }
 					L["totalPlayed"] = arg1
-					L["serverTime"] = string.format("%4d-%02d-%02d %02d:%02d", year, month, day, hour, minute)
+					L["serverTime"] = string.format("%4d-%02d-%02d %02d:%02d", date.year, date.month, date.monthDay, date.hour, date.minute)
 					L["zone"] = GetRealZoneText()
 					L["subzone"] = GetSubZoneText()
 					L["x"] = x
@@ -391,6 +405,6 @@ if nil == WhenLevel or WhenLevel.versionNumber < WhenLevel_File_Version then
 
 	me.notificationFrame = CreateFrame("Frame")
 	me.notificationFrame:SetScript("OnEvent", function(frame, event, ...) WhenLevel:Tooltip_OnEvent(frame, event, ...) end)
-	me.notificationFrame:RegisterEvent("ADDON_LOADED")
+	me.notificationFrame:RegisterEvent("PLAYER_LOGIN")
 
 end
